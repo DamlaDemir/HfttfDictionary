@@ -1,0 +1,60 @@
+﻿
+@{
+    ViewBag.Title = "Add Post";
+}
+
+<div class="container">
+    <form>
+        <div class="form-group">
+            <label for="exampleFormControlInput1">Başlık Giriniz</label>
+            <input type="text" class="form-control" id="titleInput" placeholder="Başlık Giriniz">
+        </div>
+        <div class="row">
+            <div class='col-sm-6'>
+                <div class="form-group">
+                    <label for="exampleFormControlInput1">Tarih Giriniz</label>
+                    <div class='input-group date' id='datetimepicker1'>
+                        <input type='date' class="form-control" id="datePicker" placeholder="Tarih giriniz" />
+                        <span class="input-group-addon">
+                            <span class="glyphicon glyphicon-calendar"></span>
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="comment">Comment:</label>
+            <textarea class="form-control" rows="5" id="commentArea" placeholder="İçerik giriniz"></textarea>
+        </div>
+
+        <button class="btn btn-primary" id="addPost">İçerik Ekle</button>
+    </form>
+</div>
+
+@section scripts{
+    <script type="text/javascript">
+    $(function () {
+        $("#addPost").click(function () {
+            var title = $("#titleInput").val();
+            var content = $("#commentArea").val();
+            var date = $("#datePicker").val();
+
+            var params = {
+                gonderiBaslik: title,
+                gonderiIcerik: content,
+                gonderiTarihi: datePicker,
+                kullaniciId: ""
+            }
+            $.ajax({
+                type: 'POST',
+                url: '/api/Values/',
+                data: params,
+                success: function (response) {
+                    alert("Başarı ile eklendi");
+                }
+            });
+        });
+    });
+    </script>
+}

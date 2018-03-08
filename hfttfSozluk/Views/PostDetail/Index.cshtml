@@ -1,0 +1,88 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+}
+
+
+<div class="container">
+    <div class="panel-body">
+        <hr />
+        <div class="row">
+            <div class="col-md-12">
+                <label id="postTitle"></label>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <label id="postIcerik"></label>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-4"><button class="btn btn-primary">Like</button></div>
+            <div class="col-md-8"><label id="kullanici" style="float:right;"></label></div>
+        </div>
+    </div>
+</div>
+
+@section scripts{
+    <script type="text/javascript">
+    $(function () {
+        var id=@ViewBag.gonderiId;
+        console.log(id);
+        $.ajax({
+            type:'POST',
+            url: '/api/Values/GonderiGetir',
+            data: {gonderiId: id},
+            datatype:'json',
+            success: function (response) {
+                $("#postTitle").text(response.baslik );
+                $("#postIcerik").text(response.icerik );
+                $("#kullanici").text(response.kullaniciAdi );
+            }
+        });
+
+        $.ajax({
+            url: '/api/Values/YorumGetir',
+            type: 'POST',
+            data:{gonderiId:id},
+            datatype: 'json',
+            success: function (data) {
+                console.log(data);
+                for (var i = 0; i < data.length; i++) {
+                    $("#icerik").append(
+                            '<div class="panel-body">' +
+                                '<hr />' +
+
+       ' <div class="row">' +
+           ' <div class="col-md-12">' +
+                '<label id="postIcerik">' + data[i].yorumIcerik + '</label>' +
+           ' </div>' +
+      '  </div>' +
+       ' <div class="row">' +
+           ' <div class="col-md-4"><button class="btn btn-primary" id="likeButton">Like</button></div>' +
+           ' <div class="col-md-8">' + '<a class="kullaniciAdi"  kulAdi="' + data[i].kulAdi + '"> <label  id="kullanici" style="float:right;" kulAdi="' + data[i].kullaniciAdi + '">' + data[i].kullaniciAdi + '</label></a>' + '</div>' +
+
+      '  </div> ' +
+   ' </div>');
+
+                }
+            }
+        });
+
+        $("#likeButton").click(function () {
+            var begen = $("#begen").text();
+            $("#begen").text(parseInt(begen) + 1);
+
+        });
+
+        $("body").on("click", ".kullaniciAdi", function () {
+            location.href = "../Profil/Index/" + $(this).attr("kulAdi");
+
+        });
+    });
+    </script>
+
+
+
+
+}

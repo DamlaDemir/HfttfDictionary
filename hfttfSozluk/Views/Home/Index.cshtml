@@ -1,0 +1,60 @@
+﻿<div class="container" id="icerik">
+
+</div>
+
+@section scripts{
+    <script type="text/javascript">
+    $(function () {
+
+        $.ajax({
+            url: '/api/Values/AnasayfaGonderiler',
+            type: 'GET',
+            datatype: 'json',
+            success: function (data) {
+                console.log(data);
+                for (var i = 0; i < data.length; i++) {
+                    $("#icerik").append(
+                            '<div class="panel-body">' +
+                                '<hr />' +
+                                '<div class="row">' +
+              ' <div class="col-md-12">' +
+                 '<label id="postTitle"><a class="gonderiBaslik" gonderiId="'+data[i].id+'">' + data[i].baslik + '</a></label>' +
+           ' </div>' +
+       ' </div>' +
+       ' <div class="row">' +
+           ' <div class="col-md-12">' +
+                '<label id="postIcerik">' + data[i].icerik + '</label>' +
+           ' </div>' +
+      '  </div>' +
+       ' <div class="row">' +
+           ' <div class="col-md-4"><button class="btn btn-primary" id="likeButton">Like</button></div>' +
+           ' <div class="col-md-8">' + '<a class="kullaniciAdi"  kulAdi="' + data[i].kullaniciAdi + '"> <label  id="kullanici" style="float:right;" kulAdi="' + data[i].kullaniciAdi + '">' + data[i].kullaniciAdi + '</label></a>' + '</div>' +
+
+      '  </div> ' +
+   ' </div>');
+                    for (var j = 0; j < data[i].etiketler.length; j++) {
+                        console.log(data[i].etiketler[j].etiketAdi);
+
+                    }
+
+                }
+            }
+        });
+
+        $("body").on("click", ".gonderiBaslik", function () {
+            location.href = "../PostDetail/Index/" + $(this).attr("gonderiId");
+        });
+
+        $("#likeButton").click(function () {
+
+        });
+
+        $("body").on("click", ".kullaniciAdi", function () {
+            location.href = "../Profil/Index/" + $(this).attr("kulAdi");
+
+        });
+    });
+
+    </script>
+
+}

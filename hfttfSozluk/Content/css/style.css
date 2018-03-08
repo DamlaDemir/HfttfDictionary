@@ -1,0 +1,30 @@
+﻿.navbar {
+    height: 106px;
+}
+
+.navbar-nav li{
+    margin:10px;
+}
+
+#logo{
+  float:left; 
+}
+
+#top-solid{
+    background-color: #81C147;
+    height:4px; 
+    width: auto;
+}
+
+.dot {
+  height: 5px;
+  width: 5px;
+  background-color: #000;
+  border-radius: 50%;
+  display: inline-block;
+}
+
+
+
+
+

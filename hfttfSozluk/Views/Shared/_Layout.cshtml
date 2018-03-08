@@ -1,0 +1,131 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width" />
+    <title>@ViewBag.Title</title>
+    <link href="~/Content/css/style.css" rel="stylesheet" type="text/css" />
+    <link href="~/Content/css/reset.css" rel="stylesheet" type="text/css" />
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+</head>
+<body>
+    <div id="top-solid"></div>
+    <nav class="navbar navbar-default" role="navigation">
+        <div class="container">
+            <div class="row">
+                <div class="navbar-collapse collapse ">
+                    <ul class="nav navbar-nav">
+                        <li id="logo"><img alt="Logo" src="@Url.Content("~/Content/images/logo.png")" height="50" width="120" /></li>
+                    </ul>
+                    <div class="col-sm-3 col-md-3">
+                        <form class="navbar-form" role="search">
+                            <div class="input-group" style="padding-top: 10px;">
+                                <input type="text" class="form-control" id="aranacak" placeholder="Search" name="q" style="width:280px;">
+                                <div class="input-group-btn">
+                                    <button class="btn btn-default" id="ara" type="submit"><i class="glyphicon glyphicon-search"></i></button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <ul class="nav navbar-nav navbar-right">
+                        <li><a href="/Profil/Index">Profil</a></li>
+                        <li><a href="/Register/Index">Kayıt Ol</a></li>
+                        <li><a href="/Login/Index">Giriş Yap</a></li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="row">
+                <ul class="nav navbar-nav ">
+                    <li><a>gündem</a> </li>
+                    <li> tarihte bugün</li>
+                    <li> #2017</li>
+                    <li> #spor</li>
+                    <li> #ilişkiler</li>
+                    <li> #siyaset</li>
+                    <li>
+                        <span class="dot"></span>
+                        <span class="dot"></span>
+                        <span class="dot"></span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container body-content">
+        <div class="col-md-3">
+            <div class="row">
+                <div class="col-sm-12 col-md-12">
+                    <label>Gündem</label>
+                    <ul class="list-group" id="tags"></ul>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="col-md-9">
+            @RenderBody()
+
+            <hr />
+            <footer>
+                <p>&copy; @DateTime.Now.Year hfttfSozluk</p>
+            </footer>
+        </div>
+    </div>
+
+    <script src="~/Scripts/jquery-1.10.2.min.js"></script>
+    <script type="text/javascript">
+    $(function () {
+        $.ajax({
+            url: '/api/Values/AnasayfaGonderiler',
+            type: 'GET',
+            datatype: 'json',
+            success: function (gonderi) {
+
+                for (var i = 0; i < gonderi.length; i++) {
+                    $("#tags").append(
+                        '<li class="list-group-item">' + gonderi[i].baslik + '</li>'
+                     );
+                }
+            }
+        });
+    });
+    </script>
+
+    <script type="text/javascript">
+        $(function () {
+            $("#ara").click(function () {
+                var aranacak = $("#aranacak").val();
+                $.ajax({
+                    url: '/api/Values/EtiketeGoreAra',
+                    type: 'GET',
+                    data: {etiketAdi:aranacak},
+                    datatype: 'json',
+                    success: function (data) {
+
+                        for (var i = 0; i < data.length; i++) {
+                            $("#gonderiler").append(
+                                '<li>' + data[i].baslik + '</li>' +
+                                 '<li>' + data[i].icerik + '</li>' +
+                                  '<li>' + data[i].tarih + '</li>' +
+                                   '<li>' + data[i].kullaniciAdi + '</li>'
+                                );
+                        }
+                    }
+                });
+            });
+
+            $("#addPost").click(function () {
+
+            });
+
+    });
+    </script>
+
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    @RenderSection("scripts", required: false)
+</body>
+</html>

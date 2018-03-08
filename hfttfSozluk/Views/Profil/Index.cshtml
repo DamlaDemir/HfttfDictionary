@@ -1,0 +1,108 @@
+﻿
+@{
+    ViewBag.Title = "Profil";
+}
+<div class="container" id="picerik">
+    <div class="jumbotron jumbotron-fluid">
+        <div class="container">
+            <h1 class="display-3">@ViewBag.kulAdi</h1>
+            <p id="#aciklama" class="lead"></p>
+        </div>
+    </div>
+    <div class="panel-body">
+        <hr />
+    </div>
+</div>
+
+@section scripts{
+
+
+    <script type="text/javascript">
+        $(function () {
+            var kulAdi = "@ViewBag.kulAdi";
+            $.ajax({
+                type: 'POST',
+                url: '/api/Values/ProfilGetir',
+                data: { kulAdi: kulAdi },
+                datatype: 'json',
+                success: function (response) {
+                    $("#aciklama").text(response.kulAciklama);
+                }
+            });
+
+
+            var adi="@ViewBag.kulAdi";
+        $.ajax({
+            url: '/api/Values/KullaniciGonderileriGetir',
+            type: 'POST',
+            data: {kulAdi:adi},
+            datatype: 'json',
+            success: function (data) {
+                console.log(data);
+                for (var i = 0; i < data.length; i++) {
+                    $("#picerik").append(
+                            '<div class="panel-body">' +
+                                '<hr />' +
+                                '<div class="row">' +
+              ' <div class="col-md-12">' +
+                 '<label id="postTitle"><a class="gonderiBaslik" gonderiId="'+data[i].id+'">' + data[i].baslik + '</a></label>' +
+           ' </div>' +
+       ' </div>' +
+       ' <div class="row">' +
+           ' <div class="col-md-12">' +
+                '<label id="postIcerik">' + data[i].icerik + '</label>' +
+           ' </div>' +
+      '  </div>' +
+       ' <div class="row">' +
+           ' <div class="col-md-4"><button class="btn btn-primary" id="likeButton">Like</button></div>' +
+           '<label id="#begen">'+ data[i].begeni + '</label>'+
+   ' </div>' + '</div>');
+
+                }
+            }
+        });
+
+
+        $("#likeButton").click(function () {
+            var begen = $("#begen").text();
+            $("#begen").text(parseInt(begen) + 1);
+        });
+    });
+
+
+    </script>
+
+    <script type="text/javascript">
+
+    $(function () {
+        $(function () {
+            var params = {
+                kulId: 'Bertugs'
+            }
+            $.ajax({
+                type: 'POST',
+                url: '/api/Values/ProfilGetir',
+                data: params,
+                success: function (response) {
+                    alert(response);
+                }
+            });
+        });
+
+        $("#followButton").click(function () {
+            var params = {
+                takipEdenId: 'Bertugs',
+                takipEdilenId: ''
+            }
+            $.ajax({
+                type: 'POST',
+                url: '/api/Values/ArkadasEkle',
+                data: params,
+                success: function (response) {
+                    alert("Takip Edildi");
+                }
+            });
+        });
+    });
+    </script>
+    }
